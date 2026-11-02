@@ -16,7 +16,7 @@ MessageStore::MessageStore(QObject *parent)
     : QObject(parent)
 {
     const QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-                        + QStringLiteral("/ubmeshcore");
+                        + QStringLiteral("/utmeshcore");
     QDir().mkpath(dir);
     m_path = dir + QStringLiteral("/channel_messages.jsonl");
 }

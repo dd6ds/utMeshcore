@@ -26,9 +26,9 @@
 static QString logFilePath() {
     static const QString path = [] {
         const QString dir = QStandardPaths::writableLocation(
-                    QStandardPaths::GenericDataLocation) + QStringLiteral("/ubmeshcore");
+                    QStandardPaths::GenericDataLocation) + QStringLiteral("/utmeshcore");
         QDir().mkpath(dir);
-        return dir + QStringLiteral("/ubmeshcore.log");
+        return dir + QStringLiteral("/utmeshcore.log");
     }();
     return path;
 }
@@ -46,12 +46,12 @@ void logMessage(const QString &message) {
 
 // Follows the language selected on the phone (Lomiri exports it as
 // LANG/LANGUAGE, which QLocale::system() reads). App texts are embedded as
-// :/i18n/ubmeshcore_<lang>.qm; English is the source language, so a missing
+// :/i18n/utmeshcore_<lang>.qm; English is the source language, so a missing
 // translation simply leaves the English text.
 static void installTranslators(QGuiApplication &app) {
     const QLocale locale = QLocale::system();
     QTranslator *appTranslator = new QTranslator(&app);
-    if (appTranslator->load(locale, QStringLiteral("ubmeshcore"), QStringLiteral("_"),
+    if (appTranslator->load(locale, QStringLiteral("utmeshcore"), QStringLiteral("_"),
                             QStringLiteral(":/i18n"))) {
         app.installTranslator(appTranslator);
         logMessage(QString("Language: %1 (translation loaded)").arg(locale.name()));
@@ -102,10 +102,10 @@ static BluetoothManager *exposeBackend(QQmlApplicationEngine &engine) {
     // against a null context property during shutdown.
     auto *bluetoothManager = new BluetoothManager(&engine);
     qmlRegisterUncreatableType<DeviceListModel>(
-        "ubMeshcore", 1, 0, "DeviceListModel",
+        "utMeshcore", 1, 0, "DeviceListModel",
         QStringLiteral("Provided by BluetoothManager.devicesModel"));
     qmlRegisterUncreatableType<ContactListModel>(
-        "ubMeshcore", 1, 0, "ContactListModel",
+        "utMeshcore", 1, 0, "ContactListModel",
         QStringLiteral("Provided by BluetoothManager.contactsModel"));
     engine.rootContext()->setContextProperty("BluetoothManager", bluetoothManager);
     engine.rootContext()->setContextProperty("MessageStore", new MessageStore(&engine));
@@ -128,9 +128,9 @@ int main(int argc, char *argv[]) {
     // hard-coding them breaks the app on other OS versions/devices.
 
     QGuiApplication app(argc, argv);
-    app.setApplicationName("ubMeshcore");
-    app.setOrganizationName("ubmeshcore");
-    logMessage("=== ubMeshcore starting ===");
+    app.setApplicationName("utMeshcore");
+    app.setOrganizationName("utmeshcore");
+    logMessage("=== utMeshcore starting ===");
     installTranslators(app);
 
     QQmlApplicationEngine engine;

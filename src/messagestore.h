@@ -13,7 +13,7 @@
 /// The node hands every message over exactly once (CMD_SYNC_NEXT_MESSAGE), so
 /// whatever the app does not keep is gone after a restart - and Lomiri kills
 /// suspended apps freely. Messages are appended as JSON lines to
-/// ~/.local/share/ubmeshcore/channel_messages.jsonl (inside the app's
+/// ~/.local/share/utmeshcore/channel_messages.jsonl (inside the app's
 /// AppArmor-writable data dir) and reloaded on startup.
 class MessageStore : public QObject
 {

@@ -1,7 +1,7 @@
 clickable_minimum_required: 8.7.0
 
 builder: cmake
-kill: ubmeshcore
+kill: utmeshcore
 
 # Pin the target so every container build is reproducible and clickable does
 # not have to probe the attached device for its architecture.

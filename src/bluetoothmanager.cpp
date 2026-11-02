@@ -596,7 +596,7 @@ void BluetoothManager::onServiceStateChanged(QLowEnergyService::ServiceState sta
     // Give the notification subscription a moment to take effect first.
     QTimer::singleShot(400, this, [this]() {
         if (m_uartReady)
-            m_companion.sendAppStart(QStringLiteral("ubMeshcore"));
+            m_companion.sendAppStart(QStringLiteral("utMeshcore"));
     });
 }
 

@@ -8,7 +8,7 @@
 #include <algorithm>
 
 // QSettings uses the organisation/application names set in main.cpp, i.e.
-// ~/.config/ubmeshcore/ubMeshcore.conf - inside the app's AppArmor-writable
+// ~/.config/utmeshcore/utMeshcore.conf - inside the app's AppArmor-writable
 // config directory.
 static const char kFavoritesKey[] = "contacts/favorites";
 

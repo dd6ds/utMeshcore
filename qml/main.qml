@@ -15,7 +15,7 @@ ApplicationWindow {
     visible: true
     width: Screen.width
     height: Screen.height
-    title: "ubMeshcore"
+    title: "utMeshcore"
     color: colorBackground
 
     // --- Scaling -----------------------------------------------------------

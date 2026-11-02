@@ -1,6 +1,6 @@
-# ubMeshcore
+# utMeshcore
 
-<img src="ubmeshcore.png" alt="ubMeshcore icon" width="80" align="right">
+<img src="utmeshcore.png" alt="utMeshcore icon" width="80" align="right">
 
 A Bluetooth LE companion app for [MeshCore](https://meshcore.co.uk) nodes,
 built for Ubuntu Touch.
@@ -200,7 +200,7 @@ clickable logs       # follow the app's output
 > SIGTERM until it is resumed, so use `-9`:
 >
 > ```bash
-> adb shell pkill -9 ubmeshcore; clickable install && clickable launch
+> adb shell pkill -9 utmeshcore; clickable install && clickable launch
 > ```
 
 ## Releases
@@ -227,7 +227,7 @@ into a pre-release named `build-<date>`.
 CMakeLists.txt            Build
 clickable.yaml            arm64 / ubuntu-sdk-20.04, container dependencies
 manifest.json             Click metadata (arch and framework patched by Clickable)
-ubmeshcore.apparmor       Policy groups, including the reserved "bluetooth" one
+utmeshcore.apparmor       Policy groups, including the reserved "bluetooth" one
 qml.qrc                   QML is compiled into the binary, not installed separately
 
 src/main.cpp              Entry point, QML context properties, resume handling
@@ -266,8 +266,8 @@ Coding rules for contributions are in [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Translations
 
 All user-visible texts are marked with `qsTr()` (QML) or `tr()` (C++).
-Translations live in `i18n/ubmeshcore_<lang>.ts`; CMake compiles them with
-`lrelease` and embeds them as `:/i18n/ubmeshcore_<lang>.qm`. At startup
+Translations live in `i18n/utmeshcore_<lang>.ts`; CMake compiles them with
+`lrelease` and embeds them as `:/i18n/utmeshcore_<lang>.qm`. At startup
 `main.cpp` loads the file matching `QLocale::system()` — the language set on
 the phone — and the log shows e.g. `Language: de_DE (translation loaded)`.
 English is the source language, so untranslated texts stay English.
@@ -279,13 +279,13 @@ the Clickable container (the host's `lupdate` is usually just a wrapper):
 docker run --rm -u $(id -u):$(id -g) -v "$PWD":/p -w /p \
   clickable/amd64-20.04-arm64:latest /usr/lib/qt5/bin/lupdate -no-obsolete \
   -locations relative src/*.cpp qml/*.qml \
-  -ts i18n/ubmeshcore_de.ts
+  -ts i18n/utmeshcore_de.ts
 python3 i18n/translate_de.py   # fills German; lists any text still missing
 ```
 
 To add a language, run the same `lupdate` with a new
-`-ts i18n/ubmeshcore_<lang>.ts` and translate it (Qt Linguist, or a script
-like `translate_de.py`). CMake picks up every `i18n/ubmeshcore_*.ts`
+`-ts i18n/utmeshcore_<lang>.ts` and translate it (Qt Linguist, or a script
+like `translate_de.py`). CMake picks up every `i18n/utmeshcore_*.ts`
 automatically.
 
 Text built from parts uses placeholders (`qsTr("Open %1").arg(name)`) so word
@@ -306,9 +306,9 @@ All paths are inside the app's AppArmor-writable directories:
 
 | Path | Content |
 |---|---|
-| `~/.local/share/ubmeshcore/channel_messages.jsonl` | Channel history, one JSON object per line, newest 3000 kept |
-| `~/.local/share/ubmeshcore/ubmeshcore.log` | App log (also in the journal) |
-| `~/.config/ubmeshcore/ubMeshcore.conf` | Favourites, last opened channel, appearance |
+| `~/.local/share/utmeshcore/channel_messages.jsonl` | Channel history, one JSON object per line, newest 3000 kept |
+| `~/.local/share/utmeshcore/utmeshcore.log` | App log (also in the journal) |
+| `~/.config/utmeshcore/utMeshcore.conf` | Favourites, last opened channel, appearance |
 
 Confined apps cannot write to `/tmp` or directly to `~/.local/share`; an
 earlier version logged there, and its error path then called `fclose(NULL)` and
@@ -490,7 +490,7 @@ code names — usually faster than digging through logs. For the full picture:
 clickable logs
 adb shell 'journalctl --user -n 2000 --no-pager | grep -a Companion'
 adb shell 'journalctl --user -f | grep aa-exec'        # live app output
-adb shell 'dmesg | grep ubmeshcore | grep DENIED'      # AppArmor denials
+adb shell 'dmesg | grep utmeshcore | grep DENIED'      # AppArmor denials
 ```
 
 QML load errors are written to the journal and to the app log; an app that

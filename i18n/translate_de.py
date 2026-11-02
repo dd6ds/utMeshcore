@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fills i18n/ubmeshcore_de.ts with the German translations below.
+"""Fills i18n/utmeshcore_de.ts with the German translations below.
 
 Workflow when texts change:
   1. lupdate (see README, "Translations") to refresh the .ts file
@@ -277,7 +277,7 @@ DE = {
     "Reply with route": "Mit Route antworten",
 }
 
-TS = "i18n/ubmeshcore_de.ts"
+TS = "i18n/utmeshcore_de.ts"
 tree = ET.parse(TS)
 missing = []
 for msg in tree.iter("message"):

@@ -61,7 +61,7 @@ jobs:
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ubmeshcore-${{ steps.version.outputs.version }}-arm64
+          name: utmeshcore-${{ steps.version.outputs.version }}-arm64
           path: dist/
           retention-days: 30
 
@@ -76,12 +76,12 @@ jobs:
             PRERELEASE="--prerelease"
           fi
           cat > notes.md <<NOTES
-          ubMeshcore ${{ steps.version.outputs.version }} for Ubuntu Touch (arm64), built from commit ${GITHUB_SHA::7}.
+          utMeshcore ${{ steps.version.outputs.version }} for Ubuntu Touch (arm64), built from commit ${GITHUB_SHA::7}.
 
           **Install** (phone on USB, developer mode on):
           \`\`\`bash
-          adb push ubmeshcore_*_arm64.click /home/phablet/Downloads/
-          adb shell pkcon install-local --allow-untrusted /home/phablet/Downloads/ubmeshcore_*_arm64.click
+          adb push utmeshcore_*_arm64.click /home/phablet/Downloads/
+          adb shell pkcon install-local --allow-untrusted /home/phablet/Downloads/utmeshcore_*_arm64.click
           \`\`\`
           Or open the .click file on the phone with the OpenStore app.
 
@@ -91,6 +91,6 @@ jobs:
           gh release create "$TAG" dist/* \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
-            --title "ubMeshcore $TAG" \
+            --title "utMeshcore $TAG" \
             --notes-file notes.md \
             $PRERELEASE
