@@ -35,6 +35,7 @@ add_executable(utmeshcore
     src/main.cpp
     src/bluetoothmanager.cpp
     src/bluetoothmanager_mesh.cpp
+    src/bluetoothmanager_nearby.cpp
     src/bluetoothmanager.h
     src/companionprotocol.cpp
     src/companionprotocol_rx.cpp

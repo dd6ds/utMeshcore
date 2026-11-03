@@ -71,6 +71,8 @@ public:
     int nodeCount() const;
     /// Marks a contact as stored / not stored on the node.
     void setOnNode(const QByteArray &publicKey, bool onNode);
+    /// Marks the route to a contact as unknown (after CMD_RESET_PATH).
+    void clearPath(const QByteArray &publicKey);
     /// Drops a contact from the list (after removing it from the node).
     void removeContact(const QByteArray &publicKey);
     int activeWindowSecs() const { return m_activeWindowSecs; }

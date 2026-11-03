@@ -26,7 +26,7 @@
 <context>
     <name>BluetoothManager</name>
     <message>
-        <location filename="../src/bluetoothmanager_mesh.cpp" line="+150" />
+        <location filename="../src/bluetoothmanager_mesh.cpp" line="+153" />
         <source>Session started</source>
         <translation>Sitzung gestartet</translation>
     </message>
@@ -36,7 +36,7 @@
         <translation>Sitzung gestartet - </translation>
     </message>
     <message>
-        <location line="+94" />
+        <location line="+117" />
         <source>%1 message(s) fetched from node at %2</source>
         <translation>%1 Nachricht(en) um %2 vom Node abgerufen</translation>
     </message>
@@ -156,7 +156,7 @@
         <translation>Verbinde...</translation>
     </message>
     <message>
-        <location line="+45" />
+        <location line="+46" />
         <source>Connected - discovering services...</source>
         <translation>Verbunden - Dienste werden gesucht...</translation>
     </message>
@@ -166,13 +166,13 @@
         <translation>Verbindung getrennt, bevor der Node das Advert bestätigt hat</translation>
     </message>
     <message>
-        <location line="+119" />
+        <location line="+120" />
         <source>The node did not answer. It is probably not paired with this phone yet - see "Pairing" in the README.</source>
         <translation>Der Node antwortet nicht. Vermutlich ist er noch nicht mit diesem Telefon gekoppelt - siehe "Pairing" in der README.</translation>
     </message>
     <message>
-        <location line="-155" />
-        <location line="+43" />
+        <location line="-156" />
+        <location line="+44" />
         <location line="+141" />
         <source>Not connected</source>
         <translation>Nicht verbunden</translation>
@@ -203,7 +203,7 @@
         <translation>UART bereit - Sitzung wird gestartet...</translation>
     </message>
     <message>
-        <location filename="../src/bluetoothmanager_mesh.cpp" line="+25" />
+        <location filename="../src/bluetoothmanager_mesh.cpp" line="+26" />
         <location line="+55" />
         <source>Not connected to a node</source>
         <translation>Mit keinem Node verbunden</translation>
@@ -225,7 +225,7 @@
         <translation>Verbindung fehlgeschlagen: </translation>
     </message>
     <message>
-        <location filename="../src/bluetoothmanager_mesh.cpp" line="+198" />
+        <location filename="../src/bluetoothmanager_mesh.cpp" line="+201" />
         <source>Advert not sent - not connected to your node</source>
         <translation>Advert nicht gesendet - nicht mit deinem Node verbunden</translation>
     </message>
@@ -245,16 +245,17 @@
         <location line="+14" />
         <location line="+36" />
         <location line="+14" />
+        <location line="+36" />
         <source>Unknown contact</source>
         <translation>Unbekannter Kontakt</translation>
     </message>
     <message>
-        <location line="-31" />
+        <location line="-67" />
         <source>Your node's contact list is full (%1 of %2). Remove a contact first: long-press it in the contact list → Delete contact.</source>
         <translation>Die Kontaktliste deines Nodes ist voll (%1 von %2). Entferne zuerst einen Kontakt: in der Kontaktliste lange drücken → Kontakt löschen (oder „Auswählen“ für mehrere).</translation>
     </message>
     <message>
-        <location line="-612" />
+        <location line="-642" />
         <source>%1 d %2 h</source>
         <translation>%1 T %2 Std.</translation>
     </message>
@@ -269,7 +270,12 @@
         <translation>%1 Min.</translation>
     </message>
     <message>
-        <location line="+683" />
+        <location line="+712" />
+        <source>%1 is not stored on your node - there is no path to reset.</source>
+        <translation>%1 ist nicht auf deinem Node gespeichert - es gibt keinen Pfad zum Zurücksetzen.</translation>
+    </message>
+    <message>
+        <location line="+23" />
         <source>Battery</source>
         <translation>Akku</translation>
     </message>
@@ -334,7 +340,7 @@
         <translation>Rohdaten</translation>
     </message>
     <message>
-        <location line="-341" />
+        <location line="-366" />
         <source>"%1" is not a valid channel name</source>
         <translation>„%1“ ist kein gültiger Kanalname</translation>
     </message>
@@ -523,7 +529,7 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
 <context>
     <name>CompanionProtocol</name>
     <message>
-        <location filename="../src/companionprotocol_rx.cpp" line="+308" />
+        <location filename="../src/companionprotocol_rx.cpp" line="+349" />
         <source>unsupported command</source>
         <translation>nicht unterstützter Befehl</translation>
     </message>
@@ -702,33 +708,7 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>%1 Hops</translation>
     </message>
     <message>
-        <location line="+46" />
-        <source>Send message</source>
-        <translation>Nachricht senden</translation>
-    </message>
-    <message>
-        <location line="+7" />
-        <source>Manage</source>
-        <translation>Verwalten</translation>
-    </message>
-    <message>
-        <location line="+7" />
-        <source>Remove from favourites</source>
-        <translation>Aus Favoriten entfernen</translation>
-    </message>
-    <message>
-        <location line="+0" />
-        <source>Add to favourites</source>
-        <translation>Zu Favoriten hinzufügen</translation>
-    </message>
-    <message>
-        <location line="+6" />
-        <source>Save to node</source>
-        <translation>Auf Node speichern</translation>
-    </message>
-    <message>
-        <location line="+6" />
-        <location line="+43" />
+        <location line="+86" />
         <source>Delete contact</source>
         <translation>Kontakt löschen</translation>
     </message>
@@ -753,7 +733,7 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>Sie werden von deinem Node und aus dieser Liste entfernt. Ein Kontakt erscheint wieder, sobald sein Advert erneut empfangen wird.</translation>
     </message>
     <message>
-        <location line="+40" />
+        <location line="+37" />
         <source>Connect to your node to load contacts</source>
         <translation>Mit deinem Node verbinden, um Kontakte zu laden</translation>
     </message>
@@ -773,17 +753,22 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>%1 Kontakt(e) aus empfangenen Adverts</translation>
     </message>
     <message>
-        <location line="+4" />
+        <location line="+8" />
         <source>Refresh</source>
         <translation>Aktualisieren</translation>
     </message>
     <message>
-        <location line="+5" />
+        <location line="+6" />
         <source>Advert</source>
         <translation>Advert</translation>
     </message>
     <message>
-        <location line="+5" />
+        <location line="+6" />
+        <source>Nearby</source>
+        <translation>Nähe</translation>
+    </message>
+    <message>
+        <location line="+6" />
         <source>Done</source>
         <translation>Fertig</translation>
     </message>
@@ -884,6 +869,44 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <location line="+1" />
         <source>%1 d ago</source>
         <translation>vor %1 T</translation>
+    </message>
+</context>
+<context>
+    <name>ContactMenu</name>
+    <message>
+        <location filename="../qml/ContactMenu.qml" line="+29" />
+        <source>Send message</source>
+        <translation>Nachricht senden</translation>
+    </message>
+    <message>
+        <location line="+7" />
+        <source>Manage</source>
+        <translation>Verwalten</translation>
+    </message>
+    <message>
+        <location line="+6" />
+        <source>Remove from favourites</source>
+        <translation>Aus Favoriten entfernen</translation>
+    </message>
+    <message>
+        <location line="+0" />
+        <source>Add to favourites</source>
+        <translation>Zu Favoriten hinzufügen</translation>
+    </message>
+    <message>
+        <location line="+6" />
+        <source>Reset path</source>
+        <translation>Pfad zurücksetzen</translation>
+    </message>
+    <message>
+        <location line="+8" />
+        <source>Save to node</source>
+        <translation>Auf Node speichern</translation>
+    </message>
+    <message>
+        <location line="+6" />
+        <source>Delete contact</source>
+        <translation>Kontakt löschen</translation>
     </message>
 </context>
 <context>
@@ -993,17 +1016,17 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>Nicht mit deinem Node verbunden</translation>
     </message>
     <message>
-        <location line="+25" />
+        <location line="+69" />
         <source>No messages with %1 yet.</source>
         <translation>Noch keine Nachrichten mit %1.</translation>
     </message>
     <message>
-        <location line="+59" />
+        <location line="-52" />
         <source>%1 is not stored on your node yet. Sending a message saves it there first.</source>
         <translation>%1 ist noch nicht auf deinem Node gespeichert. Beim Senden wird der Kontakt zuerst dort gespeichert.</translation>
     </message>
     <message>
-        <location line="+22" />
+        <location line="+24" />
         <source>Message to %1...</source>
         <translation>Nachricht an %1...</translation>
     </message>
@@ -1011,6 +1034,59 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <location line="+5" />
         <source>Send</source>
         <translation>Senden</translation>
+    </message>
+</context>
+<context>
+    <name>NearbyRepeaters</name>
+    <message>
+        <location filename="../qml/NearbyRepeaters.qml" line="+53" />
+        <source>‹ Contacts</source>
+        <translation>‹ Kontakte</translation>
+    </message>
+    <message>
+        <location line="+5" />
+        <source>Nearby repeaters</source>
+        <translation>Repeater in der Nähe</translation>
+    </message>
+    <message>
+        <location line="+6" />
+        <source>Search</source>
+        <translation>Suchen</translation>
+    </message>
+    <message>
+        <location line="+12" />
+        <source>Connect to your node first</source>
+        <translation>Zuerst mit deinem Node verbinden</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>Searching... repeaters answer within a few seconds</source>
+        <translation>Suche läuft... Repeater antworten innerhalb weniger Sekunden</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>%1 repeater(s) in direct range</source>
+        <translation>%1 Repeater in direkter Reichweite</translation>
+    </message>
+    <message>
+        <location line="+19" />
+        <source>No repeater answered. Only repeaters your node can hear directly (without hops) show up here.</source>
+        <translation>Kein Repeater hat geantwortet. Hier erscheinen nur Repeater, die dein Node direkt (ohne Hops) hört.</translation>
+    </message>
+    <message>
+        <location line="+21" />
+        <source>Unknown repeater (%1)</source>
+        <translation>Unbekannter Repeater (%1)</translation>
+    </message>
+    <message>
+        <location line="+8" />
+        <source>↓ SNR %1 · RSSI %2 dBm  ·  ↑ SNR %3</source>
+        <translation>↓ SNR %1 · RSSI %2 dBm  ·  ↑ SNR %3</translation>
+    </message>
+    <message>
+        <location line="+3" />
+        <source>not in contacts yet</source>
+        <translation>noch nicht in den Kontakten</translation>
     </message>
 </context>
 <context>

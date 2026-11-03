@@ -37,6 +37,7 @@ QString CompanionProtocol::commandName(quint8 code)
     case CmdSendSelfAdvert:    return QStringLiteral("SEND_SELF_ADVERT");
     case CmdAddUpdateContact:  return QStringLiteral("ADD_UPDATE_CONTACT");
     case CmdRemoveContact:     return QStringLiteral("REMOVE_CONTACT");
+    case CmdResetPath:         return QStringLiteral("RESET_PATH");
     case CmdSyncNextMessage:   return QStringLiteral("SYNC_NEXT_MESSAGE");
     case CmdGetBattAndStorage: return QStringLiteral("GET_BATT_AND_STORAGE");
     case CmdDeviceQuery:       return QStringLiteral("DEVICE_QUERY");
@@ -44,6 +45,7 @@ QString CompanionProtocol::commandName(quint8 code)
     case CmdSendStatusReq:     return QStringLiteral("SEND_STATUS_REQ");
     case CmdGetChannel:        return QStringLiteral("GET_CHANNEL");
     case CmdSetChannel:        return QStringLiteral("SET_CHANNEL");
+    case CmdSendControlData:   return QStringLiteral("SEND_CONTROL_DATA");
     default:
         return QStringLiteral("CMD(0x%1)").arg(code, 2, 16, QLatin1Char('0'));
     }
@@ -80,6 +82,7 @@ QString CompanionProtocol::responseName(quint8 code)
     case PushLogRxData:      return QStringLiteral("PUSH_LOG_RX_DATA");
     case PushTraceData:      return QStringLiteral("PUSH_TRACE_DATA");
     case PushNewAdvert:      return QStringLiteral("PUSH_NEW_ADVERT");
+    case PushControlData:    return QStringLiteral("PUSH_CONTROL_DATA");
     default:
         return QStringLiteral("UNKNOWN(0x%1)").arg(code, 2, 16, QLatin1Char('0'));
     }
@@ -166,6 +169,29 @@ void CompanionProtocol::removeContact(const QByteArray &publicKey)
     QByteArray frame;
     frame.append(char(CmdRemoveContact));
     frame.append(publicKey);
+    emitFrame(frame);
+}
+
+void CompanionProtocol::resetPath(const QByteArray &publicKey)
+{
+    if (publicKey.size() != 32)
+        return;
+    QByteArray frame;
+    frame.append(char(CmdResetPath));
+    frame.append(publicKey);
+    emitFrame(frame);
+}
+
+void CompanionProtocol::sendNodeDiscover(quint32 tag, quint8 typeMask)
+{
+    // 55 <0x80 = NODE_DISCOVER_REQ, full keys> <type_mask:1> <tag:u32> <since:u32>
+    // since = 0: every matching node answers, not only recently changed ones.
+    QByteArray frame;
+    frame.append(char(CmdSendControlData));
+    frame.append(char(0x80));
+    frame.append(char(typeMask));
+    appendLE32(frame, tag);
+    appendLE32(frame, 0);
     emitFrame(frame);
 }
 

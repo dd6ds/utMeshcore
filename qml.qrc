@@ -9,6 +9,8 @@
     <file>qml/ContactList.qml</file>
     <file>qml/ContactFilterBar.qml</file>
     <file>qml/ContactRow.qml</file>
+    <file>qml/ContactMenu.qml</file>
+    <file>qml/NearbyRepeaters.qml</file>
     <file>qml/DirectChat.qml</file>
     <file>qml/RepeaterAdmin.qml</file>
     <file>qml/AppLabel.qml</file>

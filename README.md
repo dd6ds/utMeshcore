@@ -63,6 +63,14 @@ the mesh.
   airtime) and remote CLI commands with quick buttons (`ver`, `clock`,
   `clock sync`, `neighbors`, `get name`, `get radio`, `get tx`, `advert`).
 - **Advert** — send your own flood advert from the contacts page.
+- **Reset path** — long-press any contact (companion, repeater, room server,
+  sensor) → *Reset path* forgets the stored route, e.g. when it says *direct*
+  but should go via a repeater. The next message is flooded and the route is
+  learned again from the reply.
+- **Nearby repeaters** — *Nearby* on the contacts page lists the repeaters
+  your node hears directly (zero hop), strongest first, with SNR/RSSI in both
+  directions, like *Discover nearby* in the Android/iOS apps. Tap a known one
+  to manage it. Needs companion firmware v8 or newer.
 - **Multilanguage** — the app follows the language selected on the phone.
   Included: English (default) and German. Missing translations fall back to
   English.
@@ -92,6 +100,7 @@ the mesh.
 | Repeater login / status / CLI | implemented; status block layout taken from repeater firmware, not the published spec |
 | Direct messages (chat, delivery confirmation) | implemented; delivery state is not kept across restarts |
 | Node contact table (full-table handling, save / remove contact) | implemented, not yet tested on the node |
+| Reset path, nearby repeaters | implemented, not yet tested on the node |
 
 ## Requirements
 
@@ -236,6 +245,8 @@ src/bluetoothmanager.cpp  Scanning, GATT connection, Nordic UART I/O
 src/bluetoothmanager_mesh.cpp
                           MeshCore session: channels, messages, contacts,
                           repeater admin, offline-queue drain
+src/bluetoothmanager_nearby.cpp
+                          Discovering repeaters in radio range
 src/devicelistmodel.*     List model of scanned Bluetooth devices
 src/companionprotocol.*   MeshCore companion frame encode/decode
 src/contactmodel.*        Contact list model (adverts), favourites
@@ -251,6 +262,8 @@ qml/ContactsPage.qml      Hosts ContactList
 qml/ContactList.qml       Contacts with filters, favourites, multi-select
 qml/ContactFilterBar.qml  Search, type filter, favourites / active switches
 qml/ContactRow.qml        One contact in the list
+qml/ContactMenu.qml       Long-press menu of a contact
+qml/NearbyRepeaters.qml   Repeaters in direct radio range
 qml/DirectChat.qml        Direct message chat with one contact
 qml/RepeaterAdmin.qml     Repeater / room server login, status, CLI
 qml/UnreadBadge.qml       Red unread-count badge
@@ -416,6 +429,16 @@ contacts known only from `0x8a` as *not on node* (orange) and stores them
 with `ADD_UPDATE_CONTACT` (`0x09`) before a DM; if the table is full it says
 so instead of sending. *Delete contact* (`REMOVE_CONTACT`, `0x0f`; also in
 bulk via *Select*) frees places. The contacts page shows `x of 350 stored on your node`.
+
+**Reset path** sends `RESET_PATH` (`0x0d`) with the 32-byte key; the node
+sets the contact's route to unknown and answers `OK`. It does not change the
+contact's `lastmod`, so the app marks the contact as *flood* itself instead of
+re-syncing. **Nearby repeaters** sends `SEND_CONTROL_DATA` (`0x37`) with a
+`NODE_DISCOVER_REQ` (`80 <type mask 0x04> <tag:u32> <since:u32 = 0>`); the
+node transmits it zero-hop. Repeaters that hear it answer after a random
+delay with `PUSH_CONTROL_DATA` (`0x8e`): `<snr*4> <rssi> <path_len>` then
+`<0x90|type> <their snr*4> <tag:u32> <pub_key:32>`. The app collects answers
+with the matching tag for 12 s.
 
 **Channel slots.** The node has `max_channels` slots (1, 8 or 40 depending on
 the board). All of them are read on connect, empty ones included, so the app

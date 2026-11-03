@@ -25,6 +25,7 @@
 ///   bluetoothmanager.cpp       - scanning, BLE connection, Nordic UART I/O
 ///   bluetoothmanager_mesh.cpp  - the MeshCore session on top of it: channels,
 ///                                messages, contacts, repeater administration
+///   bluetoothmanager_nearby.cpp - discovering repeaters in radio range
 class BluetoothManager : public QObject
 {
     Q_OBJECT
@@ -68,6 +69,12 @@ class BluetoothManager : public QObject
     Q_PROPERTY(QString lastAdvertInfo READ lastAdvertInfo NOTIFY advertInfoChanged)
     Q_PROPERTY(bool lastAdvertOk READ lastAdvertOk NOTIFY advertInfoChanged)
 
+    // --- nearby repeaters -------------------------------------------------
+    Q_PROPERTY(bool nearbySearching READ nearbySearching NOTIFY nearbyChanged)
+    /// Repeaters that answered the last search, strongest first: list of
+    /// { keyHex, keyPrefix, name, known, snrHere, snrThere, rssi }.
+    Q_PROPERTY(QVariantList nearbyRepeaters READ nearbyRepeaters NOTIFY nearbyChanged)
+
 public:
     explicit BluetoothManager(QObject *parent = nullptr);
     ~BluetoothManager() override;
@@ -102,6 +109,8 @@ public:
     int maxContacts() const { return m_maxContacts; }
     QString lastAdvertInfo() const { return m_lastAdvertInfo; }
     bool lastAdvertOk() const { return m_advertOk; }
+    bool nearbySearching() const { return m_nearbySearching; }
+    QVariantList nearbyRepeaters() const { return m_nearbyRepeaters; }
 
     // --- scanning and connecting ------------------------------------------
     Q_INVOKABLE void startScan();
@@ -143,6 +152,14 @@ public:
     /// Deletes several contacts; returns how many were deleted. Commands are
     /// paced by the write queue, so large batches are fine.
     Q_INVOKABLE int deleteContacts(const QStringList &keyHexes);
+    /// Forgets the stored route to any contact (companion, repeater, room,
+    /// sensor): the next message is flooded and a new route is learned.
+    Q_INVOKABLE bool resetContactPath(const QString &keyHex);
+
+    // --- nearby repeaters ---------------------------------------------------
+    /// Asks repeaters in direct radio range (zero hop) to answer; results
+    /// arrive in nearbyRepeaters during the next few seconds.
+    Q_INVOKABLE bool discoverNearbyRepeaters();
 
     // --- repeater / room server administration -----------------------------
     // keyHex = full public key from contactsModel.publicKey.
@@ -165,6 +182,7 @@ signals:
     void contactsSyncingChanged();
     void contactLimitChanged();
     void advertInfoChanged();
+    void nearbyChanged();
 
     /// timestamp = sender's send time (epoch secs), sanity-checked.
     /// route = { hops, route (one-line summary), routeDetail (multi-line) }.
@@ -252,6 +270,11 @@ private:
     QString repeaterNames(const QByteArray &hopHash) const;
     static QVariantList parseNodeStatus(const QByteArray &data);
 
+    // --- bluetoothmanager_nearby.cpp ----------------------------------------
+    void setupNearbySearch();
+    void onNodeDiscovered(quint32 tag, quint8 nodeType, const QByteArray &publicKey,
+                          double snrHere, double snrThere, int rssi);
+
     // --- scanning state ---------------------------------------------------
     QBluetoothDeviceDiscoveryAgent *m_agent = nullptr;     // created on first scan
     QBluetoothLocalDevice *m_localDevice = nullptr;        // created after startup
@@ -320,6 +343,12 @@ private:
     bool m_advertOk = true;
     QString m_lastAdvertInfo;
     QTimer m_advertTimeout;
+
+    // --- nearby repeaters ---------------------------------------------------
+    bool m_nearbySearching = false;
+    quint32 m_nearbyTag = 0;            // tag of the running search
+    QVariantList m_nearbyRepeaters;
+    QTimer m_nearbyTimer;               // end of the answer window
 };
 
 #endif // BLUETOOTHMANAGER_H

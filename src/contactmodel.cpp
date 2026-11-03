@@ -248,6 +248,18 @@ void ContactListModel::setOnNode(const QByteArray &publicKey, bool onNode)
     }
 }
 
+void ContactListModel::clearPath(const QByteArray &publicKey)
+{
+    for (int i = 0; i < m_contacts.size(); ++i) {
+        if (m_contacts.at(i).publicKey == publicKey) {
+            m_contacts[i].outPathLen = -1;
+            m_contacts[i].outPath.fill('\0');
+            emit dataChanged(index(i), index(i), { HopsRole });
+            return;
+        }
+    }
+}
+
 void ContactListModel::removeContact(const QByteArray &publicKey)
 {
     for (int i = 0; i < m_contacts.size(); ++i) {

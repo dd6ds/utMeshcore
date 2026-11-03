@@ -102,6 +102,7 @@ void BluetoothManager::connectCompanionSignals()
             this, &BluetoothManager::onContactsSyncFinished);
     connect(cp, &CompanionProtocol::contactChanged,
             &m_contactRefreshDebounce, [this]() { m_contactRefreshDebounce.start(); });
+    connect(cp, &CompanionProtocol::nodeDiscovered, this, &BluetoothManager::onNodeDiscovered);
 }
 
 void BluetoothManager::setupSessionTimers()
@@ -138,6 +139,8 @@ void BluetoothManager::setupSessionTimers()
     m_advertTimeout.setSingleShot(true);
     m_advertTimeout.setInterval(8000);
     connect(&m_advertTimeout, &QTimer::timeout, this, &BluetoothManager::onAdvertTimeout);
+
+    setupNearbySearch();
 }
 
 // The node answered APP_START: the session is up. Read everything the app
@@ -737,6 +740,28 @@ int BluetoothManager::deleteContacts(const QStringList &keyHexes)
     }
     qDebug() << "BluetoothManager: deleted" << n << "contact(s)";
     return n;
+}
+
+bool BluetoothManager::resetContactPath(const QString &keyHex)
+{
+    if (!checkSession())
+        return false;
+    const MeshContact *found = m_contacts.findByKeyHex(keyHex);
+    if (!found) {
+        emit sendFailed(tr("Unknown contact"));
+        return false;
+    }
+    // Only the node's own table holds a route; contacts known just from an
+    // advert have none to reset.
+    if (!found->onNode) {
+        emit sendFailed(tr("%1 is not stored on your node - there is no path to reset.")
+                            .arg(found->name));
+        return false;
+    }
+    qDebug() << "BluetoothManager: resetting path to" << found->name;
+    m_companion.resetPath(found->publicKey);
+    m_contacts.clearPath(found->publicKey);
+    return true;
 }
 
 QVariantList BluetoothManager::parseNodeStatus(const QByteArray &d)

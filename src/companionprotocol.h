@@ -57,6 +57,7 @@ public:
         CmdSetDeviceTime     = 6,
         CmdSendSelfAdvert    = 7,
         CmdAddUpdateContact  = 9,
+        CmdResetPath         = 13,
         CmdRemoveContact     = 15,
         CmdSyncNextMessage   = 10,
         CmdGetBattAndStorage = 20,
@@ -64,7 +65,8 @@ public:
         CmdSendLogin         = 26,
         CmdSendStatusReq     = 27,
         CmdGetChannel        = 31,
-        CmdSetChannel        = 32
+        CmdSetChannel        = 32,
+        CmdSendControlData   = 55    // firmware v8+
     };
 
     enum TxtType : quint8 {
@@ -110,7 +112,8 @@ public:
         PushStatusResponse = 0x87,
         PushLogRxData      = 0x88,
         PushTraceData      = 0x89,
-        PushNewAdvert      = 0x8A
+        PushNewAdvert      = 0x8A,
+        PushControlData    = 0x8E    // firmware v8+
     };
 
     explicit CompanionProtocol(QObject *parent = nullptr);
@@ -126,6 +129,13 @@ public:
     void addUpdateContact(const MeshContact &contact);
     /// CMD_REMOVE_CONTACT: delete a contact from the node's table.
     void removeContact(const QByteArray &publicKey);
+    /// CMD_RESET_PATH: forget the stored route to a contact, so the next
+    /// message is flooded and a new route is learned from the reply.
+    void resetPath(const QByteArray &publicKey);
+    /// CMD_SEND_CONTROL_DATA with a node discover request. The node sends it
+    /// zero-hop; nodes of the types in typeMask (bit = ADV_TYPE_*) that hear
+    /// it answer with PUSH_CONTROL_DATA carrying the same tag.
+    void sendNodeDiscover(quint32 tag, quint8 typeMask);
     /// CMD_SET_CHANNEL: <idx> <name:32, NUL-padded> <secret:16>. An empty name
     /// with an all-zero secret deletes the slot.
     void setChannel(int channelIdx, const QString &name, const QByteArray &secret16);
@@ -177,6 +187,10 @@ signals:
     void contactsSyncFinished(quint32 mostRecentLastMod);
     /// PUSH_ADVERT / PUSH_PATH_UPDATED: something in the table changed.
     void contactChanged(const QByteArray &publicKey);
+    /// Answer to a node discover request (PUSH_CONTROL_DATA). snrHere/rssi:
+    /// how our node heard the answer; snrThere: how that node heard us.
+    void nodeDiscovered(quint32 tag, quint8 nodeType, const QByteArray &publicKey,
+                        double snrHere, double snrThere, int rssi);
 
     // Repeater / room server administration.
     void loginResult(const QByteArray &keyPrefix, bool success, bool isAdmin);
@@ -208,6 +222,7 @@ private:
     void handleContact(const QByteArray &payload, bool onNode);
     void handleSent(const QByteArray &payload);
     void handleError(const QByteArray &payload);
+    void handleControlData(const QByteArray &payload);
     /// The node answered one SYNC_NEXT_MESSAGE with a queued item; ask for
     /// the next one so the drain runs on until NO_MORE_MESSAGES.
     void continueDrain();

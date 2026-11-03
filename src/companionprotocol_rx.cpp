@@ -163,9 +163,30 @@ void CompanionProtocol::handlePush(quint8 code, const QByteArray &payload)
             emit sendConfirmed(payload.left(4), readLE32(payload, 4));
         emit sendAcknowledged();
         break;
+    case PushControlData:
+        handleControlData(payload);
+        break;
     default:
         break;
     }
+}
+
+void CompanionProtocol::handleControlData(const QByteArray &payload)
+{
+    // <snr*4:i8> <rssi:i8> <path_len:1> <control payload>
+    // Control payload of a NODE_DISCOVER_RESP:
+    // <0x90 | node_type:1> <snr_there*4:i8> <tag:u32> <pub_key:32>
+    // (an 8-byte key prefix instead if the request asked for prefixes only).
+    constexpr int kData = 3;
+    if (payload.size() < kData + 6 + 32)
+        return;
+    const quint8 kind = quint8(payload.at(kData));
+    if ((kind & 0xF0) != 0x90)
+        return;
+    emit nodeDiscovered(readLE32(payload, kData + 2), kind & 0x0F,
+                        payload.mid(kData + 6, 32),
+                        qint8(payload.at(0)) / 4.0, qint8(payload.at(kData + 1)) / 4.0,
+                        qint8(payload.at(1)));
 }
 
 // ---------------------------------------------------------------------------

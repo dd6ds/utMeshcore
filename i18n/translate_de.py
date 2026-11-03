@@ -275,6 +275,23 @@ DE = {
     "No messages in this channel yet": "Noch keine Nachrichten in diesem Kanal",
     "Reply to %1": "%1 antworten",
     "Reply with route": "Mit Route antworten",
+    # --- reset path / nearby repeaters -----------------------------------------
+    "Reset path": "Pfad zurücksetzen",
+    "%1 is not stored on your node - there is no path to reset.":
+        "%1 ist nicht auf deinem Node gespeichert - es gibt keinen Pfad zum Zurücksetzen.",
+    "Nearby": "Nähe",
+    "Nearby repeaters": "Repeater in der Nähe",
+    "Search": "Suchen",
+    "Connect to your node first": "Zuerst mit deinem Node verbinden",
+    "Searching... repeaters answer within a few seconds":
+        "Suche läuft... Repeater antworten innerhalb weniger Sekunden",
+    "%1 repeater(s) in direct range": "%1 Repeater in direkter Reichweite",
+    "No repeater answered. Only repeaters your node can hear directly (without hops) show up here.":
+        "Kein Repeater hat geantwortet. Hier erscheinen nur Repeater, die dein Node direkt "
+        "(ohne Hops) hört.",
+    "Unknown repeater (%1)": "Unbekannter Repeater (%1)",
+    "not in contacts yet": "noch nicht in den Kontakten",
+    "↓ SNR %1 · RSSI %2 dBm  ·  ↑ SNR %3": "↓ SNR %1 · RSSI %2 dBm  ·  ↑ SNR %3",
 }
 
 TS = "i18n/utmeshcore_de.ts"

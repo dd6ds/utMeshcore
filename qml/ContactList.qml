@@ -85,51 +85,22 @@ Item {
 
     // Long-press menu of a contact row. contact = the row's model data.
     function showContactMenu(contact, item, x, y) {
-        contactMenu.keyHex = contact.publicKey
-        contactMenu.contactName = contact.name
-        contactMenu.contactType = contact.type
-        contactMenu.favorite = contact.isFavorite
-        contactMenu.onNode = contact.onNode
-        var p = item.mapToItem(root, x, y)
-        contactMenu.popup(root, p.x, p.y)
+        contactMenu.show(contact, item, x, y)
     }
 
-    Menu {
+    ContactMenu {
         id: contactMenu
-        property string keyHex: ""
-        property string contactName: ""
-        property string contactType: ""
-        property bool favorite: false
-        property bool onNode: true
-        MenuItem {
-            text: qsTr("Send message")
-            // Direct messages go to companions; repeaters take CLI commands.
-            visible: contactMenu.contactType === "chat"
-            height: visible ? implicitHeight : 0
-            onTriggered: root.openChat(contactMenu.keyHex, contactMenu.contactName)
-        }
-        MenuItem {
-            text: qsTr("Manage")
-            visible: contactMenu.contactType === "repeater" || contactMenu.contactType === "room"
-            height: visible ? implicitHeight : 0
-            onTriggered: root.openAdmin(contactMenu.keyHex, contactMenu.contactName,
-                                        contactMenu.contactType)
-        }
-        MenuItem {
-            text: contactMenu.favorite ? qsTr("Remove from favourites") : qsTr("Add to favourites")
-            onTriggered: BluetoothManager.contactsModel.toggleFavorite(contactMenu.keyHex)
-        }
-        // The node's contact table is limited (e.g. 350 entries); these
-        // manage what is stored there.
-        MenuItem {
-            text: qsTr("Save to node")
-            visible: !contactMenu.onNode
-            height: visible ? implicitHeight : 0
-            onTriggered: BluetoothManager.saveContactToNode(contactMenu.keyHex)
-        }
-        MenuItem {
-            text: qsTr("Delete contact")
-            onTriggered: root.confirmDelete([contactMenu.keyHex], contactMenu.contactName)
+        list: root
+    }
+
+    function openNearby() {
+        stack.push(nearbyComponent, { app: root.app, list: root })
+    }
+
+    Component {
+        id: nearbyComponent
+        NearbyRepeaters {
+            onBackRequested: stack.pop()
         }
     }
 
@@ -216,38 +187,47 @@ Item {
         ColumnLayout {
             spacing: root.spacingUnit
 
-            // Header: count + refresh + advert
+            // Header: count, then the actions in their own row so they fit
+            // on a phone screen.
+            AppLabel {
+                Layout.fillWidth: true
+                font.pixelSize: root.fontSecondary
+                wrapMode: Text.Wrap
+                text: !BluetoothManager.sessionReady
+                      ? qsTr("Connect to your node to load contacts")
+                      : BluetoothManager.contactsSyncing
+                        ? qsTr("Loading contacts...")
+                        : BluetoothManager.maxContacts > 0
+                          ? qsTr("%1 contact(s) · %2 of %3 stored on your node")
+                            .arg(BluetoothManager.contactsModel.count)
+                            .arg(BluetoothManager.contactsModel.nodeCount)
+                            .arg(BluetoothManager.maxContacts)
+                          : qsTr("%1 contact(s) from received adverts")
+                            .arg(BluetoothManager.contactsModel.count)
+            }
             RowLayout {
                 Layout.fillWidth: true
                 spacing: root.spacingUnit
-
-                AppLabel {
-                    Layout.fillWidth: true
-                    font.pixelSize: root.fontSecondary
-                    wrapMode: Text.Wrap
-                    text: !BluetoothManager.sessionReady
-                          ? qsTr("Connect to your node to load contacts")
-                          : BluetoothManager.contactsSyncing
-                            ? qsTr("Loading contacts...")
-                            : BluetoothManager.maxContacts > 0
-                              ? qsTr("%1 contact(s) · %2 of %3 stored on your node")
-                                .arg(BluetoothManager.contactsModel.count)
-                                .arg(BluetoothManager.contactsModel.nodeCount)
-                                .arg(BluetoothManager.maxContacts)
-                              : qsTr("%1 contact(s) from received adverts")
-                                .arg(BluetoothManager.contactsModel.count)
-                }
                 Button {
+                    Layout.fillWidth: true
                     text: qsTr("Refresh")
                     enabled: BluetoothManager.sessionReady && !BluetoothManager.contactsSyncing
                     onClicked: BluetoothManager.refreshContacts()
                 }
                 Button {
+                    Layout.fillWidth: true
                     text: qsTr("Advert")
                     enabled: BluetoothManager.sessionReady
                     onClicked: BluetoothManager.sendAdvert(true)
                 }
                 Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Nearby")
+                    enabled: BluetoothManager.sessionReady && !root.selectMode
+                    onClicked: root.openNearby()
+                }
+                Button {
+                    Layout.fillWidth: true
                     text: root.selectMode ? qsTr("Done") : qsTr("Select")
                     enabled: BluetoothManager.sessionReady || root.selectMode
                     onClicked: root.selectMode ? root.endSelectMode() : (root.selectMode = true)
