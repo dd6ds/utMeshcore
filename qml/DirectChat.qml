@@ -93,6 +93,50 @@ Item {
             }
         }
 
+        // Contact heard via advert but not in the node's table: sending saves
+        // it there first (fails with a clear message if the table is full).
+        AppLabel {
+            Layout.fillWidth: true
+            readonly property bool notOnNode: {
+                BluetoothManager.contactsModel.nodeCount   // re-evaluate on changes
+                return !BluetoothManager.contactsModel.isOnNode(chat.keyHex)
+            }
+            visible: notOnNode
+            text: qsTr("%1 is not stored on your node yet. Sending a message saves it there first.")
+                  .arg(chat.contactName)
+            color: app.colorWarning
+            wrapMode: Text.Wrap
+            font.pixelSize: chat.fontSecondary
+        }
+
+        AppLabel {
+            id: errorLabel
+            Layout.fillWidth: true
+            visible: text.length > 0
+            color: app.colorError
+            wrapMode: Text.Wrap
+            font.pixelSize: chat.fontSecondary
+        }
+
+        // --- input --------------------------------------------------------------
+        // At the TOP, below the header (like ChannelPage): an input at the
+        // bottom is hidden behind the on-screen keyboard.
+        RowLayout {
+            Layout.fillWidth: true
+            AppField {
+                id: input
+                Layout.fillWidth: true
+                placeholderText: qsTr("Message to %1...").arg(chat.contactName)
+                onAccepted: chat.send()
+                onTextChanged: errorLabel.text = ""
+            }
+            Button {
+                text: qsTr("Send")
+                enabled: input.text.trim().length > 0 && BluetoothManager.sessionReady
+                onClicked: chat.send()
+            }
+        }
+
         // --- conversation -------------------------------------------------------
         ListView {
             id: list
@@ -157,48 +201,6 @@ Item {
                         }
                     }
                 }
-            }
-        }
-
-        // Contact heard via advert but not in the node's table: sending saves
-        // it there first (fails with a clear message if the table is full).
-        AppLabel {
-            Layout.fillWidth: true
-            readonly property bool notOnNode: {
-                BluetoothManager.contactsModel.nodeCount   // re-evaluate on changes
-                return !BluetoothManager.contactsModel.isOnNode(chat.keyHex)
-            }
-            visible: notOnNode
-            text: qsTr("%1 is not stored on your node yet. Sending a message saves it there first.")
-                  .arg(chat.contactName)
-            color: app.colorWarning
-            wrapMode: Text.Wrap
-            font.pixelSize: chat.fontSecondary
-        }
-
-        AppLabel {
-            id: errorLabel
-            Layout.fillWidth: true
-            visible: text.length > 0
-            color: app.colorError
-            wrapMode: Text.Wrap
-            font.pixelSize: chat.fontSecondary
-        }
-
-        // --- input --------------------------------------------------------------
-        RowLayout {
-            Layout.fillWidth: true
-            AppField {
-                id: input
-                Layout.fillWidth: true
-                placeholderText: qsTr("Message to %1...").arg(chat.contactName)
-                onAccepted: chat.send()
-                onTextChanged: errorLabel.text = ""
-            }
-            Button {
-                text: qsTr("Send")
-                enabled: input.text.trim().length > 0 && BluetoothManager.sessionReady
-                onClicked: chat.send()
             }
         }
     }
