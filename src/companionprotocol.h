@@ -168,7 +168,8 @@ signals:
     /// characteristic.
     void writeRequested(const QByteArray &data);
 
-    void selfInfoReceived(const QString &name);
+    /// publicKey = the node's own 32-byte identity key (empty if missing).
+    void selfInfoReceived(const QString &name, const QByteArray &publicKey);
     void deviceInfoReceived(int firmwareVersion, int maxChannels, int maxContacts);
     /// Battery voltage of the node in millivolts.
     void batteryReceived(int milliVolts);

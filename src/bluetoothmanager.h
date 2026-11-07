@@ -26,6 +26,7 @@
 ///   bluetoothmanager_mesh.cpp  - the MeshCore session on top of it: channels,
 ///                                messages, contacts, repeater administration
 ///   bluetoothmanager_nearby.cpp - discovering repeaters in radio range
+///   bluetoothmanager_import.cpp - adding a contact from a scanned QR code
 class BluetoothManager : public QObject
 {
     Q_OBJECT
@@ -51,6 +52,8 @@ class BluetoothManager : public QObject
 
     // --- node session -----------------------------------------------------
     Q_PROPERTY(QString nodeName READ nodeName NOTIFY nodeInfoChanged)
+    /// The node's own public key as 64 hex characters, for its contact QR code.
+    Q_PROPERTY(QString nodePublicKey READ nodePublicKey NOTIFY nodeInfoChanged)
     Q_PROPERTY(bool sessionReady READ sessionReady NOTIFY nodeInfoChanged)
     /// Battery of the connected node; 0 / -1 while unknown.
     Q_PROPERTY(int batteryMilliVolts READ batteryMilliVolts NOTIFY batteryChanged)
@@ -95,6 +98,7 @@ public:
     QStringList trafficLog() const { return m_trafficLog; }
 
     QString nodeName() const { return m_nodeName; }
+    QString nodePublicKey() const { return QString::fromLatin1(m_nodePublicKey.toHex()); }
     bool sessionReady() const { return m_sessionReady; }
     int batteryMilliVolts() const { return m_batteryMv; }
     /// Estimated from the voltage (single LiPo cell), -1 = unknown.
@@ -146,6 +150,9 @@ public:
     Q_INVOKABLE bool sendDirectMessage(const QString &keyHex, const QString &text);
     /// Stores a contact (known only from an advert) in the node's table.
     Q_INVOKABLE bool saveContactToNode(const QString &keyHex);
+    /// Adds the contact of a meshcore://contact/add link (scanned or pasted)
+    /// and stores it on the node. Returns "" on success, else what is wrong.
+    Q_INVOKABLE QString addContactFromLink(const QString &link);
     /// Deletes a contact: from the node's table (if stored there) and from
     /// the list. It comes back when its advert is heard again.
     Q_INVOKABLE bool removeContactFromNode(const QString &keyHex);
@@ -243,7 +250,7 @@ private:
     // --- bluetoothmanager_mesh.cpp: reactions to the companion protocol ---
     void connectCompanionSignals();
     void setupSessionTimers();
-    void onSessionStarted(const QString &nodeName);
+    void onSessionStarted(const QString &nodeName, const QByteArray &publicKey);
     void onDeviceInfo(int firmwareVersion, int maxChannels, int maxContacts);
     void onChannelInfo(int idx, const QString &name);
     void onChannelMessage(int idx, const QString &text, quint32 ts, const MessagePath &path);
@@ -312,6 +319,7 @@ private:
     CompanionProtocol m_companion;
     bool m_sessionReady = false;
     QString m_nodeName;
+    QByteArray m_nodePublicKey;
     int m_batteryMv = 0;                // node battery, 0 = unknown
     QStringList m_channelNames;
     int m_maxChannels = 0;              // from DEVICE_INFO; 0 = unknown

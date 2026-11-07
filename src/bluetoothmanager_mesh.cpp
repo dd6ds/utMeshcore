@@ -145,9 +145,10 @@ void BluetoothManager::setupSessionTimers()
 
 // The node answered APP_START: the session is up. Read everything the app
 // needs from it.
-void BluetoothManager::onSessionStarted(const QString &nodeName)
+void BluetoothManager::onSessionStarted(const QString &nodeName, const QByteArray &publicKey)
 {
     m_nodeName = nodeName;
+    m_nodePublicKey = publicKey;
     m_sessionReady = true;
     emit nodeInfoChanged();
     setConnectionState(nodeName.isEmpty() ? tr("Session started")

@@ -482,6 +482,7 @@ void BluetoothManager::onControllerDisconnected()
     m_uartReady = false;
     m_sessionReady = false;
     m_nodeName.clear();
+    m_nodePublicKey.clear();
     setBattery(0);
     m_contactRefreshDebounce.stop();
     m_writeQueue.clear();

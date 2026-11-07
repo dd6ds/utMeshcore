@@ -12,6 +12,9 @@
 
 namespace {
 
+constexpr int kPublicKeySize = 32;
+constexpr int kSelfKeyOffset = 3;        // SELF_INFO: after type and two TX power bytes
+
 quint32 readLE32(const QByteArray &data, int offset)
 {
     if (offset + 4 > data.size())
@@ -54,9 +57,13 @@ void CompanionProtocol::handleReply(quint8 code, const QByteArray &payload)
 {
     switch (code) {
     case RespSelfInfo:
-        // Layout drifts between firmware revisions; the node name is the
+        // <adv_type> <tx_power> <max_tx_power> <public_key:32> ... <name>
+        // The middle drifts between firmware revisions; the node name is the
         // trailing string in every revision seen so far.
-        emit selfInfoReceived(trailingText(payload, 1));
+        emit selfInfoReceived(trailingText(payload, 1),
+                              payload.size() >= kSelfKeyOffset + kPublicKeySize
+                                  ? payload.mid(kSelfKeyOffset, kPublicKeySize)
+                                  : QByteArray());
         break;
     case RespChannelInfo:
         handleChannelInfo(payload);

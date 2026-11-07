@@ -18,6 +18,8 @@
 
 #include "bluetoothmanager.h"
 #include "messagestore.h"
+#include "qrcodeitem.h"
+#include "qrscanner.h"
 #include "systemtheme.h"
 
 // Confined click apps may only write below ~/.local/share/<package-name>,
@@ -93,7 +95,7 @@ static int gridUnitPx() {
     return (ok && px > 0) ? px : 8;
 }
 
-// Makes the C++ backend and the grid unit available to QML.
+// Makes the C++ backend, the QR code helpers and the grid unit available to QML.
 static BluetoothManager *exposeBackend(QQmlApplicationEngine &engine) {
     // Bluetooth is initialised lazily inside BluetoothManager - no
     // QBluetoothLocalDevice / D-Bus access at startup.
@@ -107,8 +109,10 @@ static BluetoothManager *exposeBackend(QQmlApplicationEngine &engine) {
     qmlRegisterUncreatableType<ContactListModel>(
         "utMeshcore", 1, 0, "ContactListModel",
         QStringLiteral("Provided by BluetoothManager.contactsModel"));
+    qmlRegisterType<QrCodeItem>("utMeshcore", 1, 0, "QrCode");
     engine.rootContext()->setContextProperty("BluetoothManager", bluetoothManager);
     engine.rootContext()->setContextProperty("MessageStore", new MessageStore(&engine));
+    engine.rootContext()->setContextProperty(QStringLiteral("QrScanner"), new QrScanner(&engine));
     engine.rootContext()->setContextProperty(QStringLiteral("SystemTheme"),
                                              new SystemTheme(&engine));
     const int gridUnit = gridUnitPx();

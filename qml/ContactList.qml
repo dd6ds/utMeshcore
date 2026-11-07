@@ -93,6 +93,15 @@ Item {
         list: root
     }
 
+    function showContactQr(name, keyHex, type) {
+        contactQrDialog.showFor(name, keyHex, type)
+    }
+
+    ContactQrDialog {
+        id: contactQrDialog
+        app: root.app
+    }
+
     function openNearby() {
         stack.push(nearbyComponent, { app: root.app, list: root })
     }

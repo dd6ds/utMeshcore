@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 // Long-press menu of a contact row, with every action for that contact.
 Menu {
     id: menu
-    property var list                // ContactList (open chat/admin, delete)
+    property var list                // ContactList (open chat/admin, QR code, delete)
 
     property string keyHex: ""
     property string contactName: ""
@@ -39,6 +39,10 @@ Menu {
         visible: menu.contactType === "repeater" || menu.contactType === "room"
         height: visible ? implicitHeight : 0
         onTriggered: menu.list.openAdmin(menu.keyHex, menu.contactName, menu.contactType)
+    }
+    MenuItem {
+        text: qsTr("Show QR code")
+        onTriggered: menu.list.showContactQr(menu.contactName, menu.keyHex, menu.contactType)
     }
     MenuItem {
         text: menu.favorite ? qsTr("Remove from favourites") : qsTr("Add to favourites")

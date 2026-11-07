@@ -18,6 +18,24 @@ DE = {
     "Like the phone": "Wie das Telefon",
     "Light": "Hell",
     "Dark": "Dunkel",
+    # --- contact QR code -----------------------------------------------------
+    "My contact code": "Mein Kontakt-Code",
+    "Show QR code": "QR-Code anzeigen",
+    "Scan with the MeshCore app to add this contact.":
+        "Mit der MeshCore-App scannen, um diesen Kontakt hinzuzufügen.",
+    "Scan contact": "Kontakt scannen",
+    "Hold a MeshCore contact code still in front of the camera.":
+        "Halte einen MeshCore-Kontakt-Code ruhig vor die Kamera.",
+    "or paste a meshcore:// link": "oder einen meshcore://-Link einfügen",
+    "Add": "Hinzufügen",
+    "Close": "Schließen",
+    "Contact added.": "Kontakt hinzugefügt.",
+    "Connect to your node first": "Verbinde dich zuerst mit deinem Node",
+    "This is not a MeshCore contact code": "Das ist kein MeshCore-Kontakt-Code",
+    "The contact code is incomplete": "Der Kontakt-Code ist unvollständig",
+    "This is your own node": "Das ist dein eigener Node",
+    "Your node's contact list is full": "Die Kontaktliste deines Nodes ist voll",
+    "%1 is already in your contacts": "%1 ist schon in deinen Kontakten",
     # --- connection / Bluetooth -------------------------------------------
     "Session started": "Sitzung gestartet",
     "Session started - ": "Sitzung gestartet - ",

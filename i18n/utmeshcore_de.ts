@@ -26,7 +26,7 @@
 <context>
     <name>BluetoothManager</name>
     <message>
-        <location filename="../src/bluetoothmanager_mesh.cpp" line="+153" />
+        <location filename="../src/bluetoothmanager_mesh.cpp" line="+154" />
         <source>Session started</source>
         <translation>Sitzung gestartet</translation>
     </message>
@@ -161,7 +161,7 @@
         <translation>Verbunden - Dienste werden gesucht...</translation>
     </message>
     <message>
-        <location line="+29" />
+        <location line="+30" />
         <source>Connection lost before the node confirmed the advert</source>
         <translation>Verbindung getrennt, bevor der Node das Advert bestätigt hat</translation>
     </message>
@@ -171,8 +171,8 @@
         <translation>Der Node antwortet nicht. Vermutlich ist er noch nicht mit diesem Telefon gekoppelt - siehe "Pairing" in der README.</translation>
     </message>
     <message>
-        <location line="-156" />
-        <location line="+44" />
+        <location line="-157" />
+        <location line="+45" />
         <location line="+141" />
         <source>Not connected</source>
         <translation>Nicht verbunden</translation>
@@ -255,7 +255,7 @@
         <translation>Die Kontaktliste deines Nodes ist voll (%1 von %2). Entferne zuerst einen Kontakt: in der Kontaktliste lange drücken → Kontakt löschen (oder „Auswählen“ für mehrere).</translation>
     </message>
     <message>
-        <location line="-642" />
+        <location line="-643" />
         <source>%1 d %2 h</source>
         <translation>%1 T %2 Std.</translation>
     </message>
@@ -270,7 +270,7 @@
         <translation>%1 Min.</translation>
     </message>
     <message>
-        <location line="+712" />
+        <location line="+713" />
         <source>%1 is not stored on your node - there is no path to reset.</source>
         <translation>%1 ist nicht auf deinem Node gespeichert - es gibt keinen Pfad zum Zurücksetzen.</translation>
     </message>
@@ -358,6 +358,36 @@
         <location line="+29" />
         <source>No channel in that slot</source>
         <translation>Kein Kanal auf diesem Platz</translation>
+    </message>
+    <message>
+        <location filename="../src/bluetoothmanager_import.cpp" line="+34" />
+        <source>Connect to your node first</source>
+        <translation>Zuerst mit deinem Node verbinden</translation>
+    </message>
+    <message>
+        <location line="+5" />
+        <source>This is not a MeshCore contact code</source>
+        <translation>Das ist kein MeshCore-Kontakt-Code</translation>
+    </message>
+    <message>
+        <location line="+10" />
+        <source>The contact code is incomplete</source>
+        <translation>Der Kontakt-Code ist unvollständig</translation>
+    </message>
+    <message>
+        <location line="+3" />
+        <source>This is your own node</source>
+        <translation>Das ist dein eigener Node</translation>
+    </message>
+    <message>
+        <location line="+2" />
+        <source>Your node's contact list is full</source>
+        <translation>Die Kontaktliste deines Nodes ist voll</translation>
+    </message>
+    <message>
+        <location line="+3" />
+        <source>%1 is already in your contacts</source>
+        <translation>%1 ist schon in deinen Kontakten</translation>
     </message>
 </context>
 <context>
@@ -529,7 +559,7 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
 <context>
     <name>CompanionProtocol</name>
     <message>
-        <location filename="../src/companionprotocol_rx.cpp" line="+349" />
+        <location filename="../src/companionprotocol_rx.cpp" line="+356" />
         <source>unsupported command</source>
         <translation>nicht unterstützter Befehl</translation>
     </message>
@@ -607,7 +637,12 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>(ohne Namen)</translation>
     </message>
     <message>
-        <location line="+32" />
+        <location line="+9" />
+        <source>My contact code</source>
+        <translation>Mein Kontakt-Code</translation>
+    </message>
+    <message>
+        <location line="+31" />
         <source>Channels</source>
         <translation>Kanäle</translation>
     </message>
@@ -708,7 +743,7 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>%1 Hops</translation>
     </message>
     <message>
-        <location line="+86" />
+        <location line="+95" />
         <source>Delete contact</source>
         <translation>Kontakt löschen</translation>
     </message>
@@ -874,7 +909,7 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
 <context>
     <name>ContactMenu</name>
     <message>
-        <location filename="../qml/ContactMenu.qml" line="+29" />
+        <location filename="../qml/ContactMenu.qml" line="+31" />
         <source>Send message</source>
         <translation>Nachricht senden</translation>
     </message>
@@ -885,6 +920,11 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
     </message>
     <message>
         <location line="+6" />
+        <source>Show QR code</source>
+        <translation>QR-Code anzeigen</translation>
+    </message>
+    <message>
+        <location line="+4" />
         <source>Remove from favourites</source>
         <translation>Aus Favoriten entfernen</translation>
     </message>
@@ -907,6 +947,14 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <location line="+6" />
         <source>Delete contact</source>
         <translation>Kontakt löschen</translation>
+    </message>
+</context>
+<context>
+    <name>ContactQrDialog</name>
+    <message>
+        <location filename="../qml/ContactQrDialog.qml" line="+55" />
+        <source>Scan with the MeshCore app to add this contact.</source>
+        <translation>Mit der MeshCore-App scannen, um diesen Kontakt hinzuzufügen.</translation>
     </message>
 </context>
 <context>
@@ -935,9 +983,14 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <translation>Kontakte</translation>
     </message>
     <message>
-        <location line="+14" />
+        <location line="+17" />
         <source>Back</source>
         <translation>Zurück</translation>
+    </message>
+    <message>
+        <location line="+5" />
+        <source>Scan contact</source>
+        <translation>Kontakt scannen</translation>
     </message>
 </context>
 <context>
@@ -1256,6 +1309,39 @@ Der Nachrichtenverlauf in der App wird ebenfalls gelöscht. Du kannst den Kanal 
         <location line="+6" />
         <source>Send</source>
         <translation>Senden</translation>
+    </message>
+</context>
+<context>
+    <name>ScanContactPopup</name>
+    <message>
+        <location filename="../qml/ScanContactPopup.qml" line="+28" />
+        <source>Hold a MeshCore contact code still in front of the camera.</source>
+        <translation>Halte einen MeshCore-Kontakt-Code ruhig vor die Kamera.</translation>
+    </message>
+    <message>
+        <location line="+11" />
+        <source>Contact added.</source>
+        <translation>Kontakt hinzugefügt.</translation>
+    </message>
+    <message>
+        <location line="+15" />
+        <source>Scan contact</source>
+        <translation>Kontakt scannen</translation>
+    </message>
+    <message>
+        <location line="+26" />
+        <source>or paste a meshcore:// link</source>
+        <translation>oder einen meshcore://-Link einfügen</translation>
+    </message>
+    <message>
+        <location line="+4" />
+        <source>Add</source>
+        <translation>Hinzufügen</translation>
+    </message>
+    <message>
+        <location line="+7" />
+        <source>Close</source>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>

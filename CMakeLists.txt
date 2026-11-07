@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(utmeshcore CXX)
+project(utmeshcore C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,6 +36,7 @@ add_executable(utmeshcore
     src/bluetoothmanager.cpp
     src/bluetoothmanager_mesh.cpp
     src/bluetoothmanager_nearby.cpp
+    src/bluetoothmanager_import.cpp
     src/bluetoothmanager.h
     src/companionprotocol.cpp
     src/companionprotocol_rx.cpp
@@ -48,6 +49,18 @@ add_executable(utmeshcore
     src/messagestore.h
     src/systemtheme.cpp
     src/systemtheme.h
+    src/qrcodeitem.cpp
+    src/qrcodeitem.h
+    src/qrcodegen/qrcodegen.cpp
+    src/qrcodegen/qrcodegen.hpp
+    src/qrscanner.cpp
+    src/qrscanner.h
+    src/quirc/decode.c
+    src/quirc/identify.c
+    src/quirc/quirc.c
+    src/quirc/quirc.h
+    src/quirc/quirc_internal.h
+    src/quirc/version_db.c
     qml.qrc
     ${UTMESHCORE_I18N_QRC})
 add_dependencies(utmeshcore utmeshcore_translations)

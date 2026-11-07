@@ -79,6 +79,12 @@ the mesh.
 - **Dark mode** — *Appearance* on the first page: *Like the phone* follows
   the Lomiri theme (and switches along when it changes), or pick *Light* /
   *Dark* fixed.
+- **Contact QR codes** — *My contact code* on the connection page shows the
+  own node, *Show QR code* in a contact's long-press menu any other contact,
+  as a `meshcore://contact/add` link the MeshCore app can scan. *Scan
+  contact* on the contacts page reads such a code with the camera (hold it
+  still, about 15–25 cm away) or takes the link pasted as text, and stores
+  the contact on the node.
 
 ## Status
 
@@ -101,6 +107,7 @@ the mesh.
 | Direct messages (chat, delivery confirmation) | implemented; delivery state is not kept across restarts |
 | Node contact table (full-table handling, save / remove contact) | implemented, not yet tested on the node |
 | Reset path, nearby repeaters | implemented, not yet tested on the node |
+| Contact QR code (own node, contacts), scanning a contact code | working (scanned the MeshCore app's code on a Poco X3 Pro, contact stored on the node) |
 
 ## Requirements
 
@@ -236,7 +243,7 @@ into a pre-release named `build-<date>`.
 CMakeLists.txt            Build
 clickable.yaml            arm64 / ubuntu-sdk-20.04, container dependencies
 manifest.json             Click metadata (arch and framework patched by Clickable)
-utmeshcore.apparmor       Policy groups, including the reserved "bluetooth" one
+utmeshcore.apparmor       Policy groups: the reserved "bluetooth", and "camera" for scanning
 qml.qrc                   QML is compiled into the binary, not installed separately
 
 src/main.cpp              Entry point, QML context properties, resume handling
@@ -252,6 +259,12 @@ src/companionprotocol.*   MeshCore companion frame encode/decode
 src/contactmodel.*        Contact list model (adverts), favourites
 src/messagestore.*        Persistent message history, unread counts, last channel
 src/systemtheme.*         Whether the phone uses a dark Lomiri theme ("SystemTheme")
+src/qrcodeitem.*          QML element "QrCode" that draws a text as a QR code
+src/qrcodegen/            QR Code generator library by Project Nayuki (MIT), v1.8.0
+src/qrscanner.*           Reads a QR code from a viewfinder frame ("QrScanner")
+src/quirc/                quirc QR decoder by Daniel Beer (ISC), v1.2
+src/bluetoothmanager_import.cpp
+                          Adding a contact from a meshcore://contact/add link
 
 qml/main.qml              Window, shared state (history, unread), colours, page stack
 qml/DevicesPage.qml       Scan and pick a node
@@ -268,6 +281,8 @@ qml/DirectChat.qml        Direct message chat with one contact
 qml/RepeaterAdmin.qml     Repeater / room server login, status, CLI
 qml/UnreadBadge.qml       Red unread-count badge
 qml/AppearanceChoice.qml  Light / dark / like-the-phone selection
+qml/ContactQrDialog.qml   A contact (or the own node) as a scannable QR code
+qml/ScanContactPopup.qml  Camera scanner for contact codes, or paste the link
 qml/AppLabel.qml          Label in the theme's text colour
 qml/AppField.qml          TextField in the theme's field colours
 .github/workflows/build.yml
@@ -503,6 +518,10 @@ overhears. It is decoded to a one-line summary and kept out of the UI.
   (contact type borders, unread badge, CLI console) work on either.
 - **The adapter is created at startup**, not lazily on the first scan: the
   *Start Scan* button is only enabled once the adapter is known to be ready.
+- **The contact scanner reads viewfinder frames, not photos.** Taking a photo
+  plays the camera click sound every time, which a scanner taking one every
+  few seconds cannot live with. On the Poco X3 Pro only macro focus gets a
+  close code sharp; `searchAndLock()` never reports a lock there.
 
 ## Debugging
 
@@ -521,4 +540,8 @@ QML load errors are written to the journal and to the app log; an app that
 
 ## License
 
-See `LICENSE`.
+See `LICENSE`. `src/qrcodegen/` is the
+[QR Code generator library](https://www.nayuki.io/page/qr-code-generator-library)
+by Project Nayuki, also MIT licensed; `src/quirc/` is
+[quirc](https://github.com/dlbeer/quirc) by Daniel Beer, ISC licensed. Both
+notices are in the file headers.

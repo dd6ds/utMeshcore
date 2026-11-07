@@ -17,5 +17,7 @@
     <file>qml/AppField.qml</file>
     <file>qml/UnreadBadge.qml</file>
     <file>qml/AppearanceChoice.qml</file>
+    <file>qml/ContactQrDialog.qml</file>
+    <file>qml/ScanContactPopup.qml</file>
   </qresource>
 </RCC>

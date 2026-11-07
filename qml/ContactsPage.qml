@@ -20,12 +20,25 @@ Page {
             app: page.app
         }
 
-        Button {
-            text: qsTr("Back")
+        RowLayout {
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: Math.round(app.gu * 22)
-            Layout.preferredHeight: Math.round(app.gu * 5)
-            onClicked: app.showPage(app.pageConnection)
+            spacing: app.spacingUnit
+            Button {
+                text: qsTr("Back")
+                Layout.preferredHeight: Math.round(app.gu * 5)
+                onClicked: app.showPage(app.pageConnection)
+            }
+            Button {
+                text: qsTr("Scan contact")
+                enabled: BluetoothManager.sessionReady
+                Layout.preferredHeight: Math.round(app.gu * 5)
+                onClicked: scanPopup.open()
+            }
         }
+    }
+
+    ScanContactPopup {
+        id: scanPopup
+        app: page.app
     }
 }

@@ -68,6 +68,14 @@ Page {
             Layout.fillWidth: true
         }
 
+        // The own node as a QR code, for others to add it as a contact.
+        Button {
+            text: qsTr("My contact code")
+            visible: BluetoothManager.sessionReady && BluetoothManager.nodePublicKey.length > 0
+            onClicked: ownQrDialog.showFor(BluetoothManager.nodeName,
+                                           BluetoothManager.nodePublicKey, "chat")
+        }
+
         AppLabel {
             text: app.batteryText()
             visible: BluetoothManager.sessionReady && text.length > 0
@@ -126,5 +134,10 @@ Page {
             Layout.alignment: Qt.AlignHCenter
             onClicked: app.showPage(app.pageDevices)
         }
+    }
+
+    ContactQrDialog {
+        id: ownQrDialog
+        app: page.app
     }
 }
