@@ -22,9 +22,7 @@ Menu {
         onNode = contact.onNode
         hops = contact.hops
         var p = item.mapToItem(list, x, y)
-        console.warn("DIAG show", p.x, p.y, list.width, list.height)
         popup(list, p.x, p.y)
-        console.warn("DIAG after popup visible", visible, "opened", opened, x, y, width, height, "parent", parent)
     }
 
     MenuItem {

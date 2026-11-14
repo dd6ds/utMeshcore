@@ -130,10 +130,7 @@ Item {
                     list.openAdmin(contact.publicKey, contact.name, contact.type)
             }
             // Long press: menu with all options.
-            onPressed: console.warn("DIAG pressed", contact.name)
-            onCanceled: console.warn("DIAG canceled", contact.name)
             onPressAndHold: {
-                console.warn("DIAG pressAndHold", contact.name, list.selectMode)
                 if (list.selectMode)
                     list.toggleSelected(contact.publicKey)
                 else
