@@ -372,13 +372,14 @@ Frames received (verified against a live node, `DD6DS-Mobile`, unless noted):
 | Code | Meaning |
 |---|---|
 | `0x02` / `0x03` / `0x04` | Contacts start (`<count:4>`), one contact, end (`<most_recent_lastmod:4>`) |
-| `0x05` | `SELF_INFO`; node name is the trailing string |
+| `0x05` | `SELF_INFO` — `<type> <tx_power> <max_tx_power> <pub_key:32> ...`; node name is the trailing string |
 | `0x06` | `SENT` — `<type> <ack/tag:4> <suggested_timeout:4>` |
 | `0x07` / `0x10` | Contact message v1 / v3 (v3 adds `<snr> <reserved:2>` in front) |
 | `0x08` / `0x11` | Channel message v1 / v3 — see below |
 | `0x0a` | `NO_MORE_MESSAGES` — the node's offline queue is empty |
 | `0x0d` | `DEVICE_INFO` — `<fw_ver> [v3+: <max_contacts/2> <max_channels> ...]` |
 | `0x12` | Channel table entry |
+| `0x1b` | Channel datagram (binary, not text) — `<snr×4> <reserved:2> <channel_idx> <path_len> <data_type:2> <len> <data>` |
 | `0x80` / `0x81` | Advert / path updated — `<pub_key:32>`; triggers an incremental contact sync |
 | `0x83` | Message waiting (1 byte); answer with `SYNC_NEXT_MESSAGE` |
 | `0x85` / `0x86` | Login success (`<permissions> <prefix:6> ...`, bit 0 = admin) / fail |
@@ -401,6 +402,15 @@ Parsing `0x08` with the v3 offsets reads a timestamp byte as the channel
 The text is `"<sender name>: <message>"`. Do not search backwards for the
 trailing printable run either: timestamp bytes such as `6a cf b9 cb` pass a
 naive printable test and end up prepended to the message.
+
+**The offline queue holds more than text messages.** Firmware 1.15+ queues
+channel datagrams (`0x1b`, image chunks and other app data sent with
+`SEND_CHANNEL_DATA`) beside the messages, and they answer
+`SYNC_NEXT_MESSAGE` like one. Draining only on known message codes stops at
+the first datagram and leaves everything behind it on the node until the next
+nudge — on a busy channel the app then lags hours behind. Skip what cannot be
+shown and keep asking until `NO_MORE_MESSAGES`, also for reply codes the app
+does not know yet.
 
 **Message path.** The channel message frame only carries the raw `path_len`
 byte — `0bSSCCCCCC`, hop count plus hash size − 1 (so `0x42` = 2 hops with
@@ -537,6 +547,16 @@ adb shell 'dmesg | grep utmeshcore | grep DENIED'      # AppArmor denials
 
 QML load errors are written to the journal and to the app log; an app that
 "does not start" is almost always a QML error, not AppArmor.
+
+## Development
+
+utMeshcore is developed by DD6DS with an AI coding assistant (Anthropic's
+Claude), which wrote much of the code. Changes are built with
+`clickable build` and tested on real hardware — a Poco X3 NFC and a Poco X3
+Pro with a Heltec V4 companion node — before they are committed;
+`CONTRIBUTING.md` holds the rules the code follows. Problems seen on live
+nodes are traced in the logs and fixed at the cause (see *Companion protocol
+notes*). Questions and bug reports are welcome as GitHub issues.
 
 ## License
 
