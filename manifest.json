@@ -3,7 +3,7 @@
   "title": "utMeshcore",
   "version": "0.2.1",
   "description": "Bluetooth companion app for MeshCore nodes on Ubuntu Touch",
-  "maintainer": "Developer <developer@example.com>",
+  "maintainer": "DD6DS <dd6ds@eclipso.de>",
   "architecture": "$ENV{CLICK_ARCH}",
   "framework": "ubuntu-sdk-20.04",
   "hooks": {
