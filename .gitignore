@@ -1,6 +1,7 @@
 # Build output
 build/
 *.click
+target/
 
 # CMake leftovers if someone configures in-tree
 CMakeCache.txt
